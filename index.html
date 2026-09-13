@@ -26,8 +26,7 @@
     "addressCountry": "GB"
   },
   "openingHoursSpecification": [
-    { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Friday","Saturday"], "opens": "09:00", "closes": "18:30" },
-    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Thursday", "opens": "09:00", "closes": "19:30" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"], "opens": "09:00", "closes": "19:00" },
     { "@type": "OpeningHoursSpecification", "dayOfWeek": "Sunday", "opens": "09:00", "closes": "16:30" }
   ],
   "aggregateRating": {
@@ -358,12 +357,12 @@
         </div>
         <table class="hours-table" id="hoursTable">
           <tbody>
-            <tr data-day="1"><td>Monday</td><td>9:00 am to 6:30 pm</td></tr>
-            <tr data-day="2"><td>Tuesday</td><td>9:00 am to 6:30 pm</td></tr>
-            <tr data-day="3"><td>Wednesday</td><td>9:00 am to 6:30 pm</td></tr>
-            <tr data-day="4"><td>Thursday</td><td>9:00 am to 7:30 pm</td></tr>
-            <tr data-day="5"><td>Friday</td><td>9:00 am to 6:30 pm</td></tr>
-            <tr data-day="6"><td>Saturday</td><td>9:00 am to 6:30 pm</td></tr>
+            <tr data-day="1"><td>Monday</td><td>9:00 am to 7:00 pm</td></tr>
+            <tr data-day="2"><td>Tuesday</td><td>9:00 am to 7:00 pm</td></tr>
+            <tr data-day="3"><td>Wednesday</td><td>9:00 am to 7:00 pm</td></tr>
+            <tr data-day="4"><td>Thursday</td><td>9:00 am to 7:00 pm</td></tr>
+            <tr data-day="5"><td>Friday</td><td>9:00 am to 7:00 pm</td></tr>
+            <tr data-day="6"><td>Saturday</td><td>9:00 am to 7:00 pm</td></tr>
             <tr data-day="0"><td>Sunday</td><td>9:00 am to 4:30 pm</td></tr>
           </tbody>
         </table>
@@ -458,12 +457,12 @@
   (function(){
     var hoursByDay = {
       0: [9*60, 16*60 + 30],
-      1: [9*60, 18*60 + 30],
-      2: [9*60, 18*60 + 30],
-      3: [9*60, 18*60 + 30],
-      4: [9*60, 19*60 + 30],
-      5: [9*60, 18*60 + 30],
-      6: [9*60, 18*60 + 30]
+      1: [9*60, 18*60],
+      2: [9*60, 18*60],
+      3: [9*60, 18*60],
+      4: [9*60, 18*60],
+      5: [9*60, 18*60],
+      6: [9*60, 18*60]
     };
     var names = {0:'Sunday',1:'Monday',2:'Tuesday',3:'Wednesday',4:'Thursday',5:'Friday',6:'Saturday'};
     var now = new Date();
@@ -495,57 +494,82 @@
   })();
 
   // ---------- LIVE GOOGLE RATING ----------
-  // 1. Get an API key from console.cloud.google.com (enable "Places API (New)").
-  // 2. Restrict the key to your website's domain (HTTP referrers) and to the
-  //    "Places API (New)" only, so it's safe to expose in this file.
-  // 3. Paste the key below. Until you do, the page just shows the fixed
-  //    numbers already in the HTML.
   var GOOGLE_PLACES_API_KEY = 'AIzaSyBc1OH88oG1iKdPorJZkUxv07FlbzsgQso';
-  var GOOGLE_PLACE_ID = 'ChIJaepIonMIdkgRj3b-MjGiUe8'; // Nick's Barbers, 356 High St, Sutton
+  var GOOGLE_PLACE_ID = 'ChIJaepIonMIdkgRj3b-MjGiUe8';
 
   (function(){
-    if (!GOOGLE_PLACES_API_KEY || GOOGLE_PLACES_API_KEY.indexOf('PASTE_YOUR_API_KEY') !== -1) return;
+    if (!GOOGLE_PLACES_API_KEY || GOOGLE_PLACES_API_KEY === 'YOUR_API_KEY') return;
 
-    var CACHE_KEY = 'nb_google_rating_v1';
-    var CACHE_MS = 6 * 60 * 60 * 1000; // refresh at most every 6 hours
+    var CACHE_KEY = 'nb_google_rating_v2';
+    var CACHE_MS = 60 * 60 * 1000; // Refresh every hour
 
     function starString(rating){
       var out = '';
-      for (var i = 1; i <= 5; i++){ out += (rating >= i - 0.5) ? '\u2605' : '\u2606'; }
+      for (var i = 1; i <= 5; i++){
+        out += (rating >= i - 0.5) ? '\u2605' : '\u2606';
+      }
       return out;
     }
 
     function applyRating(rating, count){
-      var stars = starString(rating);
-      document.querySelectorAll('.js-rating-num').forEach(function(el){ el.textContent = rating.toFixed(1); });
-      document.querySelectorAll('.js-rating-count').forEach(function(el){ el.textContent = count + ' Google reviews'; });
-      document.querySelectorAll('.js-rating-count-plain').forEach(function(el){ el.textContent = count; });
-      document.querySelectorAll('.js-stars').forEach(function(el){ el.textContent = stars; });
+      document.querySelectorAll('.js-rating-num').forEach(function(el){
+        el.textContent = rating.toFixed(1);
+      });
+      document.querySelectorAll('.js-rating-count').forEach(function(el){
+        el.textContent = count + ' Google reviews';
+      });
+      document.querySelectorAll('.js-rating-count-plain').forEach(function(el){
+        el.textContent = count;
+      });
+      document.querySelectorAll('.js-stars').forEach(function(el){
+        el.textContent = starString(rating);
+      });
     }
 
-    var cached = null;
-    try { cached = JSON.parse(localStorage.getItem(CACHE_KEY)); } catch(e){}
-    if (cached && (Date.now() - cached.time) < CACHE_MS){
-      applyRating(cached.rating, cached.count);
-      return;
-    }
-
-    fetch('https://places.googleapis.com/v1/places/' + GOOGLE_PLACE_ID, {
-      headers: {
-        'X-Goog-Api-Key': GOOGLE_PLACES_API_KEY,
-        'X-Goog-FieldMask': 'rating,userRatingCount'
-      }
-    })
-    .then(function(res){ if (!res.ok) throw new Error('Places API responded ' + res.status); return res.json(); })
-    .then(function(data){
-      if (typeof data.rating === 'number' && typeof data.userRatingCount === 'number'){
+    function loadRating(){
+      fetch('https://places.googleapis.com/v1/places/' + GOOGLE_PLACE_ID, {
+        headers: {
+          'X-Goog-Api-Key': GOOGLE_PLACES_API_KEY,
+          'X-Goog-FieldMask': 'rating,userRatingCount'
+        }
+      })
+      .then(function(res){
+        if (!res.ok) {
+          throw new Error('Places API responded ' + res.status);
+        }
+        return res.json();
+      })
+      .then(function(data){
+        if (typeof data.rating !== 'number' || typeof data.userRatingCount !== 'number'){
+          throw new Error('Google returned incomplete rating data');
+        }
         applyRating(data.rating, data.userRatingCount);
-        try { localStorage.setItem(CACHE_KEY, JSON.stringify({ rating: data.rating, count: data.userRatingCount, time: Date.now() })); } catch(e){}
+        try {
+          localStorage.setItem(CACHE_KEY, JSON.stringify({
+            rating: data.rating,
+            count: data.userRatingCount,
+            time: Date.now()
+          }));
+        } catch(e){}
+      })
+      .catch(function(err){
+        console.warn('Could not refresh Google rating:', err);
+      });
+    }
+
+    // Load the cached rating immediately.
+    try {
+      var cached = JSON.parse(localStorage.getItem(CACHE_KEY));
+      if (cached && typeof cached.rating === 'number' && typeof cached.count === 'number'){
+        applyRating(cached.rating, cached.count);
       }
-    })
-    .catch(function(err){
-      console.warn('Could not refresh the live Google rating, showing the last known numbers instead.', err);
-    });
+    } catch(e){}
+
+    // Fetch the latest rating from Google.
+    loadRating();
+
+    // Refresh once per hour while the page remains open.
+    setInterval(loadRating, CACHE_MS);
   })();
 </script>
 
