@@ -206,8 +206,16 @@
   .hours-table tr.today td:last-child{ color: var(--ink); }
   .hours-table tr.today{ background: var(--paper-2); }
 
-  .map-frame{ border: 1px solid var(--line); border-radius:2px; overflow:hidden; height: 360px; background:#ddd; }
+  .map-frame{ border: 1px solid var(--line); border-radius:2px; overflow:hidden; height: 360px; background:#ddd; position: relative; }
   .map-frame iframe{ width:100%; height:100%; border:0; }
+  .map-placeholder{
+    width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:12px; text-align:center; padding:24px; cursor:pointer; border:none; background:var(--paper-2); color:var(--ink);
+    font-family:'Work Sans',sans-serif;
+  }
+  .map-placeholder:hover{ background:#e6e3dc; }
+  .map-placeholder .btn-primary{ background:var(--ink); color:var(--paper); pointer-events:none; }
+  .map-placeholder p{ margin:0; font-size:0.86rem; color:var(--gray); max-width:34ch; }
   .addr-line{ margin-top:16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; }
   .addr-line span{ color: var(--gray); font-size:0.94rem; }
   .link-arrow{ font-weight:600; text-decoration:none; border-bottom: 1.5px solid var(--ink); padding-bottom:2px; }
@@ -364,8 +372,10 @@
         </table>
       </div>
       <div>
-        <div class="map-frame">
-          <iframe title="Map to Nick's Barbers, 356 High Street, Sutton" loading="lazy" src="https://www.google.com/maps?q=Nick%27s+Barbers,356+High+St,Sutton+SM1+1QE&output=embed"></iframe>
+        <div class="map-frame" id="mapFrame">
+          <div class="map-placeholder" id="mapPlaceholder" style="cursor:default;">
+            <p>Waiting on your cookie choice below to load the map.</p>
+          </div>
         </div>
         <div class="addr-line">
           <span>356 High Street, Sutton, London SM1 1QE</span>
@@ -442,7 +452,7 @@
 
 <!-- #5: Cookie consent banner (the Google Maps embed sets its own cookies) -->
 <div id="cookieBanner" role="dialog" aria-live="polite" aria-label="Cookie notice" hidden>
-  <p>This site embeds Google Maps, which may set its own cookies. See our <a href="privacy.html" style="text-decoration:underline;">privacy policy</a> for details.</p>
+  <p>This site can embed Google Maps to show our location, which sets its own cookies. Accept to load the map, or decline and we won't load it — you can still browse and get directions via the link instead. See our <a href="privacy.html" style="text-decoration:underline;">privacy policy</a>.</p>
   <div class="cookie-actions">
     <button class="decline" id="cookieDecline" type="button">Decline</button>
     <button class="accept" id="cookieAccept" type="button">Accept</button>
@@ -505,25 +515,51 @@
     if (row) row.classList.add('today');
   })();
 
-  // ---------- COOKIE BANNER ----------
+  // ---------- COOKIE BANNER + GATED MAP ----------
   (function(){
     var banner = document.getElementById('cookieBanner');
+    var frame = document.getElementById('mapFrame');
     var KEY = 'nb_cookie_choice';
-    try {
-      if (!localStorage.getItem(KEY)) banner.hidden = false;
-    } catch(e) {
+
+    function loadMap(){
+      var iframe = document.createElement('iframe');
+      iframe.title = "Map to Nick's Barbers, 356 High Street, Sutton";
+      iframe.loading = 'lazy';
+      iframe.src = 'https://www.google.com/maps?q=Nick%27s+Barbers,356+High+St,Sutton+SM1+1QE&output=embed';
+      frame.innerHTML = '';
+      frame.appendChild(iframe);
+    }
+
+    function showDeclinedPlaceholder(){
+      frame.innerHTML = '<div class="map-placeholder" style="cursor:default;">' +
+        '<p>Map hidden based on your cookie choice. <a href="https://www.google.com/maps?q=356+High+St,+Sutton+SM1+1QE" target="_blank" rel="noopener" style="text-decoration:underline;">Open directions in Google Maps</a> instead, or change your choice in the banner.</p>' +
+        '</div>';
+    }
+
+    var choice = null;
+    try { choice = localStorage.getItem(KEY); } catch(e){}
+
+    if (choice === 'accepted') {
+      loadMap();
+      banner.hidden = true;
+    } else if (choice === 'declined') {
+      showDeclinedPlaceholder();
+      banner.hidden = true;
+    } else {
       banner.hidden = false;
     }
+
     function choose(value){
       try { localStorage.setItem(KEY, value); } catch(e){}
       banner.hidden = true;
+      if (value === 'accepted') { loadMap(); } else { showDeclinedPlaceholder(); }
     }
     document.getElementById('cookieAccept').addEventListener('click', function(){ choose('accepted'); });
     document.getElementById('cookieDecline').addEventListener('click', function(){ choose('declined'); });
   })();
 
   // ---------- LIVE GOOGLE RATING ----------
-  var GOOGLE_PLACES_API_KEY = 'AIzaSyBc1OH88oG1iKdPorJZkUxv07FlbzsgQso'; // TODO: restrict this key, see note above
+  var GOOGLE_PLACES_API_KEY = 'AIzaSyBc1OH88oG1iKdPorJZkUxv07FlbzsgQso'; // restricted to this domain in Google Cloud Console
   var GOOGLE_PLACE_ID = 'ChIJaepIonMIdkgRj3b-MjGiUe8';
 
   (function(){
