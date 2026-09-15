@@ -42,7 +42,7 @@
   "openingHoursSpecification": [
     { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Friday","Saturday"], "opens": "09:00", "closes": "18:30" },
     { "@type": "OpeningHoursSpecification", "dayOfWeek": "Thursday", "opens": "09:00", "closes": "19:30" },
-    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Sunday", "opens": "09:30", "closes": "18:00" }
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": "Sunday", "opens": "09:00", "closes": "16:30" }
   ],
   "aggregateRating": {
     "@type": "AggregateRating",
@@ -216,7 +216,7 @@
   /* ---------- RATINGS ---------- */
   .ratings-wrap{ display:grid; grid-template-columns: 0.85fr 1.15fr; gap: 56px; align-items:center; }
   @media (max-width:860px){ .ratings-wrap{ grid-template-columns:1fr; } }
-  .big-rating{ display:flex; align-items:baseline; gap:16px; }
+  .big-rating{ display:flex; align-items:center; gap:16px; }
   .big-rating .num{ font-size: 4.4rem; }
   .big-rating .meta{ font-size:0.92rem; color: var(--gray); line-height:1.5; text-align:center; }
   .stars-row{ letter-spacing:3px; font-size:1.1rem; margin: 10px 0 4px; }
@@ -360,7 +360,7 @@
             <tr data-day="4" data-open="09:00" data-close="19:30"><td>Thursday</td><td>9:00 am to 7:30 pm</td></tr>
             <tr data-day="5" data-open="09:00" data-close="18:30"><td>Friday</td><td>9:00 am to 6:30 pm</td></tr>
             <tr data-day="6" data-open="09:00" data-close="18:30"><td>Saturday</td><td>9:00 am to 6:30 pm</td></tr>
-            <tr data-day="0" data-open="08:30" data-close="18:00"><td>Sunday</td><td>8:30 am to 6:00 pm</td></tr>
+            <tr data-day="0" data-open="09:00" data-close="16:30"><td>Sunday</td><td>9:00 am to 4:30 pm</td></tr>
           </tbody>
         </table>
       </div>
