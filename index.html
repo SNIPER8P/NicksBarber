@@ -7,7 +7,6 @@
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <meta name="description" content="Nick's Barbers, 356 High Street, Sutton. Classic and modern cuts, fades, beard trims and head shaves. 4.3 stars from 46 reviews on Google.">
 
-<!-- #6/#7: canonical URL + social preview (Open Graph / Twitter Card) -->
 <!-- Replace https://sniper8p.github.io/NicksBarber/ with your real domain before launch -->
 <link rel="canonical" href="https://sniper8p.github.io/NicksBarber/">
 <meta property="og:type" content="business.business">
@@ -456,9 +455,6 @@
   });
 
   // ---------- OPEN/CLOSED STATUS PILL ----------
-  // Reads hours directly from the table's data-open / data-close attributes,
-  // so the table is the single source of truth. No separate hours object to
-  // keep in sync.
   (function(){
     var names = {0:'Sunday',1:'Monday',2:'Tuesday',3:'Wednesday',4:'Thursday',5:'Friday',6:'Saturday'};
 
@@ -519,12 +515,6 @@
   })();
 
   // ---------- LIVE GOOGLE RATING ----------
-  // #3 SECURITY NOTE: This key is visible to anyone who views the page source.
-  // A browser-side key can never be fully hidden on a static site with no backend.
-  // Minimum fix before launch: in Google Cloud Console, restrict this key to
-  // "HTTP referrers" limited to your live domain, and restrict its API scope to
-  // only the Places API "Place Details" method. That stops it being reused
-  // elsewhere even though it's still readable in your source.
   var GOOGLE_PLACES_API_KEY = 'AIzaSyBc1OH88oG1iKdPorJZkUxv07FlbzsgQso'; // TODO: restrict this key, see note above
   var GOOGLE_PLACE_ID = 'ChIJaepIonMIdkgRj3b-MjGiUe8';
 
