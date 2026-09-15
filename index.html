@@ -354,13 +354,13 @@
       <div>
         <table class="hours-table" id="hoursTable">
           <tbody>
-            <tr data-day="1"><td>Monday</td><td>9:00 am to 6:30 pm</td></tr>
-            <tr data-day="2"><td>Tuesday</td><td>9:00 am to 6:30 pm</td></tr>
-            <tr data-day="3"><td>Wednesday</td><td>9:00 am to 6:30 pm</td></tr>
-            <tr data-day="4"><td>Thursday</td><td>9:00 am to 7:30 pm</td></tr>
-            <tr data-day="5"><td>Friday</td><td>9:00 am to 6:30 pm</td></tr>
-            <tr data-day="6"><td>Saturday</td><td>9:00 am to 6:30 pm</td></tr>
-            <tr data-day="0"><td>Sunday</td><td>9:00 am to 4:30 pm</td></tr>
+            <tr data-day="1" data-open="09:00" data-close="18:30"><td>Monday</td><td>9:00 am to 6:30 pm</td></tr>
+            <tr data-day="2" data-open="09:00" data-close="18:30"><td>Tuesday</td><td>9:00 am to 6:30 pm</td></tr>
+            <tr data-day="3" data-open="09:00" data-close="18:30"><td>Wednesday</td><td>9:00 am to 6:30 pm</td></tr>
+            <tr data-day="4" data-open="09:00" data-close="19:30"><td>Thursday</td><td>9:00 am to 7:30 pm</td></tr>
+            <tr data-day="5" data-open="09:00" data-close="18:30"><td>Friday</td><td>9:00 am to 6:30 pm</td></tr>
+            <tr data-day="6" data-open="09:00" data-close="18:30"><td>Saturday</td><td>9:00 am to 6:30 pm</td></tr>
+            <tr data-day="0" data-open="09:00" data-close="16:30"><td>Sunday</td><td>9:00 am to 4:30 pm</td></tr>
           </tbody>
         </table>
       </div>
@@ -455,28 +455,35 @@
     a.addEventListener('click', function(){ links.classList.remove('open'); toggle.setAttribute('aria-expanded','false'); });
   });
 
+  // ---------- OPEN/CLOSED STATUS PILL ----------
+  // Reads hours directly from the table's data-open / data-close attributes,
+  // so the table is the single source of truth. No separate hours object to
+  // keep in sync.
   (function(){
-    var hoursByDay = {
-      0: [9*60, 16*60 + 30],
-      1: [9*60, 18*60],
-      2: [9*60, 18*60],
-      3: [9*60, 18*60],
-      4: [9*60, 18*60],
-      5: [9*60, 18*60],
-      6: [9*60, 18*60]
-    };
     var names = {0:'Sunday',1:'Monday',2:'Tuesday',3:'Wednesday',4:'Thursday',5:'Friday',6:'Saturday'};
-    var now = new Date();
-    var day = now.getDay();
-    var minutes = now.getHours()*60 + now.getMinutes();
-    var todaysHours = hoursByDay[day];
-    var dot = document.getElementById('statusDot');
-    var text = document.getElementById('statusText');
+
+    function toMinutes(hhmm){
+      var parts = hhmm.split(':');
+      return parseInt(parts[0], 10) * 60 + parseInt(parts[1], 10);
+    }
 
     function timeLabel(mins){
       var h = Math.floor(mins/60), m = mins%60;
       return (h%12===0?12:h%12) + (m? ':'+String(m).padStart(2,'0'):'') + (h<12?'am':'pm');
     }
+
+    function getDayHours(dayIndex){
+      var row = document.querySelector('#hoursTable tr[data-day="'+dayIndex+'"]');
+      if (!row) return null;
+      return [toMinutes(row.dataset.open), toMinutes(row.dataset.close)];
+    }
+
+    var now = new Date();
+    var day = now.getDay();
+    var minutes = now.getHours()*60 + now.getMinutes();
+    var todaysHours = getDayHours(day);
+    var dot = document.getElementById('statusDot');
+    var text = document.getElementById('statusText');
 
     if (todaysHours && minutes >= todaysHours[0] && minutes < todaysHours[1]){
       dot.classList.add('open');
@@ -486,8 +493,8 @@
       text.textContent = 'Closed now, opens today at ' + timeLabel(todaysHours[0]);
     } else {
       dot.classList.add('closed');
-      var next = hoursByDay[(day+1)%7];
-      text.textContent = 'Closed now, opens tomorrow at ' + timeLabel(next[0]);
+      var nextHours = getDayHours((day+1)%7);
+      text.textContent = 'Closed now, opens tomorrow at ' + (nextHours ? timeLabel(nextHours[0]) : '');
     }
 
     var row = document.querySelector('#hoursTable tr[data-day="'+day+'"]');
