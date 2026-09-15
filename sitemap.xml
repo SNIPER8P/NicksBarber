@@ -2,16 +2,19 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://sniper8p.github.io/NicksBarber/</loc>
+    <lastmod>2026-09-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://https://sniper8p.github.io/NicksBarber/privacy.html</loc>
+    <loc>https://sniper8p.github.io/NicksBarber/privacy.html</loc>
+    <lastmod>2026-09-15</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://https://sniper8p.github.io/NicksBarber/terms.html</loc>
+    <loc>https://sniper8p.github.io/NicksBarber/terms.html</loc>
+    <lastmod>2026-09-15</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
