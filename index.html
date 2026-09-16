@@ -13,10 +13,7 @@
 <meta property="og:title" content="Nick's Barbers, 356 High Street, Sutton">
 <meta property="og:description" content="Classic and modern cuts, fades, beard trims and head shaves. 4.3 stars from 46 reviews on Google.">
 <meta property="og:image" content="https://sniper8p.github.io/NicksBarber/social-preview.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
 <meta property="og:url" content="https://sniper8p.github.io/NicksBarber/">
-<meta name="theme-color" content="#131313">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Nick's Barbers, 356 High Street, Sutton">
 <meta name="twitter:description" content="Classic and modern cuts, fades, beard trims and head shaves.">
@@ -30,7 +27,7 @@
   "@context": "https://schema.org",
   "@type": "HairSalon",
   "name": "Nick's Barbers",
-  "image": "https://sniper8p.github.io/NicksBarber/storefront.png",
+  "image": "",
   "telephone": "+442086435088",
   "priceRange": "£7-£16",
   "address": {
@@ -50,10 +47,7 @@
     "@type": "AggregateRating",
     "ratingValue": "4.3",
     "reviewCount": "46"
-  },
-  "sameAs": [
-    "https://maps.app.goo.gl/ovYPeBSG19zxiJMa8"
-  ]
+  }
 }
 </script>
 <style>
@@ -212,16 +206,13 @@
   .hours-table tr.today td:last-child{ color: var(--ink); }
   .hours-table tr.today{ background: var(--paper-2); }
 
-  .map-frame{ border: 1px solid var(--line); border-radius:2px; overflow:hidden; height: 360px; background:#ddd; position: relative; }
+  .map-frame{ border: 1px solid var(--line); border-radius:2px; overflow:hidden; height: 360px; background:#ddd; }
   .map-frame iframe{ width:100%; height:100%; border:0; }
   .map-placeholder{
     width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center;
-    gap:12px; text-align:center; padding:24px; cursor:pointer; border:none; background:var(--paper-2); color:var(--ink);
-    font-family:'Work Sans',sans-serif;
+    gap:14px; text-align:center; padding:24px; background: var(--paper-2); color: var(--ink);
   }
-  .map-placeholder:hover{ background:#e6e3dc; }
-  .map-placeholder .btn-primary{ background:var(--ink); color:var(--paper); pointer-events:none; }
-  .map-placeholder p{ margin:0; font-size:0.86rem; color:var(--gray); max-width:34ch; }
+  .map-placeholder p{ max-width: 34ch; color: var(--gray); font-size:0.92rem; margin:0; }
   .addr-line{ margin-top:16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; }
   .addr-line span{ color: var(--gray); font-size:0.94rem; }
   .link-arrow{ font-weight:600; text-decoration:none; border-bottom: 1.5px solid var(--ink); padding-bottom:2px; }
@@ -379,8 +370,9 @@
       </div>
       <div>
         <div class="map-frame" id="mapFrame">
-          <div class="map-placeholder" id="mapPlaceholder" style="cursor:default;">
-            <p>Waiting on your cookie choice below to load the map.</p>
+          <div class="map-placeholder" id="mapPlaceholder">
+            <p>We only load the Google Map once you accept cookies, since it sets its own third-party cookies.</p>
+            <button class="btn btn-dark" id="mapLoadBtn" type="button">Accept cookies &amp; show map</button>
           </div>
         </div>
         <div class="addr-line">
@@ -400,10 +392,6 @@
           <div class="meta">out of 5 on Google<br>from <span class="js-rating-count-plain">46</span> reviews</div>
         </div>
         <div class="stars-row js-stars">&#9733;&#9733;&#9733;&#9733;&#9734;</div>
-        <div class="google-attribution" style="margin-top:14px; display:flex; align-items:center; justify-content:center; gap:8px; font-size:0.82rem; color:var(--gray);">
-          <svg width="16" height="16" viewBox="0 0 48 48" aria-hidden="true"><path fill="#4285F4" d="M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z"/><path fill="#34A853" d="M24 46c5.94 0 10.92-1.97 14.56-5.33l-7.11-5.52c-1.97 1.32-4.49 2.1-7.45 2.1-5.73 0-10.58-3.87-12.31-9.07H4.34v5.7C7.96 41.07 15.4 46 24 46z"/><path fill="#FBBC05" d="M11.69 28.18C11.25 26.86 11 25.45 11 24s.25-2.86.69-4.18v-5.7H4.34C2.85 17.09 2 20.45 2 24s.85 6.91 2.34 9.88l7.35-5.7z"/><path fill="#EA4335" d="M24 10.75c3.23 0 6.13 1.11 8.41 3.29l6.31-6.31C34.91 4.18 29.93 2 24 2 15.4 2 7.96 6.93 4.34 14.12l7.35 5.7c1.73-5.2 6.58-9.07 12.31-9.07z"/></svg>
-          <span>Rating and review data provided by <a href="https://www.google.com/maps/search/?api=1&query=Nick%27s+Barbers+356+High+St+Sutton+SM1+1QE" target="_blank" rel="noopener" style="color:var(--ink); text-decoration:underline;">Google</a></span>
-        </div>
       </div>
     </div>
     <div class="wrap review-actions" style="justify-content: center;">
@@ -462,7 +450,7 @@
 
 <!-- #5: Cookie consent banner (the Google Maps embed sets its own cookies) -->
 <div id="cookieBanner" role="dialog" aria-live="polite" aria-label="Cookie notice" hidden>
-  <p>This site can embed Google Maps to show our location, which sets its own cookies. Accept to load the map, or decline and we won't load it — you can still browse and get directions via the link instead. See our <a href="privacy.html" style="text-decoration:underline;">privacy policy</a>.</p>
+  <p>This site can embed Google Maps, which sets its own cookies. See our <a href="privacy.html" style="text-decoration:underline;">privacy policy</a> for details. Declining just keeps the map hidden — you can still get directions via the link above.</p>
   <div class="cookie-actions">
     <button class="decline" id="cookieDecline" type="button">Decline</button>
     <button class="accept" id="cookieAccept" type="button">Accept</button>
@@ -525,35 +513,42 @@
     if (row) row.classList.add('today');
   })();
 
-  // ---------- COOKIE BANNER + GATED MAP ----------
+  // ---------- CONSENT-GATED GOOGLE MAP ----------
+  // The Google Maps iframe is never inserted into the page until the visitor
+  // has accepted cookies (either just now, or on a previous visit). This is
+  // the piece that makes the cookie banner's "Decline" option actually mean
+  // something: nothing from Google Maps loads, and no cookies are set,
+  // unless/until consent is given.
+  function loadMap(){
+    var frame = document.getElementById('mapFrame');
+    if (!frame || frame.dataset.loaded === 'true') return;
+    frame.dataset.loaded = 'true';
+    frame.innerHTML =
+      '<iframe title="Map to Nick\'s Barbers, 356 High Street, Sutton" loading="lazy" ' +
+      'src="https://www.google.com/maps?q=Nick%27s+Barbers,356+High+St,Sutton+SM1+1QE&output=embed"></iframe>';
+  }
+
+  var mapLoadBtn = document.getElementById('mapLoadBtn');
+  if (mapLoadBtn){
+    mapLoadBtn.addEventListener('click', function(){
+      try { localStorage.setItem('nb_cookie_choice', 'accepted'); } catch(e){}
+      loadMap();
+      var banner = document.getElementById('cookieBanner');
+      if (banner) banner.hidden = true;
+    });
+  }
+
+  // ---------- COOKIE BANNER ----------
   (function(){
     var banner = document.getElementById('cookieBanner');
-    var frame = document.getElementById('mapFrame');
     var KEY = 'nb_cookie_choice';
+    var existingChoice = null;
+    try { existingChoice = localStorage.getItem(KEY); } catch(e) {}
 
-    function loadMap(){
-      var iframe = document.createElement('iframe');
-      iframe.title = "Map to Nick's Barbers, 356 High Street, Sutton";
-      iframe.loading = 'lazy';
-      iframe.src = 'https://www.google.com/maps?q=Nick%27s+Barbers,356+High+St,Sutton+SM1+1QE&output=embed';
-      frame.innerHTML = '';
-      frame.appendChild(iframe);
-    }
-
-    function showDeclinedPlaceholder(){
-      frame.innerHTML = '<div class="map-placeholder" style="cursor:default;">' +
-        '<p>Map hidden based on your cookie choice. <a href="https://www.google.com/maps?q=356+High+St,+Sutton+SM1+1QE" target="_blank" rel="noopener" style="text-decoration:underline;">Open directions in Google Maps</a> instead, or change your choice in the banner.</p>' +
-        '</div>';
-    }
-
-    var choice = null;
-    try { choice = localStorage.getItem(KEY); } catch(e){}
-
-    if (choice === 'accepted') {
+    if (existingChoice === 'accepted'){
       loadMap();
       banner.hidden = true;
-    } else if (choice === 'declined') {
-      showDeclinedPlaceholder();
+    } else if (existingChoice === 'declined'){
       banner.hidden = true;
     } else {
       banner.hidden = false;
@@ -562,14 +557,17 @@
     function choose(value){
       try { localStorage.setItem(KEY, value); } catch(e){}
       banner.hidden = true;
-      if (value === 'accepted') { loadMap(); } else { showDeclinedPlaceholder(); }
+      if (value === 'accepted') loadMap();
     }
     document.getElementById('cookieAccept').addEventListener('click', function(){ choose('accepted'); });
     document.getElementById('cookieDecline').addEventListener('click', function(){ choose('declined'); });
   })();
 
   // ---------- LIVE GOOGLE RATING ----------
-  var GOOGLE_PLACES_API_KEY = 'AIzaSyBc1OH88oG1iKdPorJZkUxv07FlbzsgQso'; // restricted to this domain in Google Cloud Console
+  // NOTE: restrict this key by HTTP referrer in the Google Cloud Console
+  // before launch — an unrestricted key visible in client-side JS can be
+  // copied and used elsewhere against your billing.
+  var GOOGLE_PLACES_API_KEY = 'AIzaSyBc1OH88oG1iKdPorJZkUxv07FlbzsgQso'; // TODO: restrict this key, see note above
   var GOOGLE_PLACE_ID = 'ChIJaepIonMIdkgRj3b-MjGiUe8';
 
   (function(){
@@ -620,7 +618,7 @@
         }
         applyRating(data.rating, data.userRatingCount);
         try {
-          sessionStorage.setItem(CACHE_KEY, JSON.stringify({
+          localStorage.setItem(CACHE_KEY, JSON.stringify({
             rating: data.rating,
             count: data.userRatingCount,
             time: Date.now()
@@ -634,7 +632,7 @@
 
     // Load the cached rating immediately.
     try {
-      var cached = JSON.parse(sessionStorage.getItem(CACHE_KEY));
+      var cached = JSON.parse(localStorage.getItem(CACHE_KEY));
       if (cached && typeof cached.rating === 'number' && typeof cached.count === 'number'){
         applyRating(cached.rating, cached.count);
       }
