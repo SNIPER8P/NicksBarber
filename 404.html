@@ -6,7 +6,11 @@
 <title>Page not found — Nick's Barbers</title>
 <meta name="robots" content="noindex">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<!--
+  Google Fonts is a third-party service and is only loaded if this visitor previously
+  accepted the cookie notice on the homepage (see script near the end of <body>).
+  Otherwise this page renders on its serif/sans-serif fallbacks.
+-->
 <style>
   body{
     margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center;
@@ -27,5 +31,30 @@
     <p>That page doesn't exist, but Nick's Barbers is still on 356 High Street, Sutton.</p>
     <a class="btn" href="/">Back to the homepage</a>
   </div>
+
+<script>
+  // Google Fonts only loads if the visitor already accepted the cookie notice
+  // on the homepage. This page does not show its own banner or make its own
+  // Google requests otherwise.
+  (function(){
+    var choice = null;
+    try { choice = localStorage.getItem('nb_cookie_choice'); } catch(e){}
+    if (choice === 'accepted') {
+      var pre1 = document.createElement('link');
+      pre1.rel = 'preconnect';
+      pre1.href = 'https://fonts.googleapis.com';
+      var pre2 = document.createElement('link');
+      pre2.rel = 'preconnect';
+      pre2.href = 'https://fonts.gstatic.com';
+      pre2.crossOrigin = 'anonymous';
+      var sheet = document.createElement('link');
+      sheet.rel = 'stylesheet';
+      sheet.href = 'https://fonts.googleapis.com/css2?family=Fraunces:wght@600&family=Work+Sans:wght@400;500;600&display=swap';
+      document.head.appendChild(pre1);
+      document.head.appendChild(pre2);
+      document.head.appendChild(sheet);
+    }
+  })();
+</script>
 </body>
 </html>
