@@ -19,13 +19,6 @@
 <meta name="twitter:description" content="Classic and modern cuts, fades, beard trims and head shaves.">
 <meta name="twitter:image" content="https://sniper8p.github.io/NicksBarber/social-preview.png">
 
-<!--
-  Google Fonts are a third-party service loaded from Google's servers, which sends the
-  visitor's IP address to Google before they've made a cookie choice. So instead of the
-  usual <link> tags here, the fonts are only injected by script once the visitor accepts
-  the cookie notice (see the consent script near the end of <body>). Until then the site
-  renders on its serif/sans-serif fallbacks below.
--->
 <script type="application/ld+json" id="nb-schema">
 {
   "@context": "https://schema.org",
@@ -459,9 +452,6 @@
   </div>
 </footer>
 
-<!-- Cookie consent banner. Google Fonts, the Google Maps embed and the live Google
-     Places rating are all third-party services that contact Google's servers and/or
-     use local storage, so none of them run until a choice is made here. -->
 <div id="cookieBanner" role="dialog" aria-live="polite" aria-label="Cookie notice" hidden>
   <p>This site can load optional Google services — Google Fonts (typefaces), a Google Maps embed and a live Google Places rating — which contact Google's servers and set their own cookies. Accept to enable them, or decline and we'll show simple built-in fallbacks instead. See our <a href="privacy.html" style="text-decoration:underline;">privacy policy</a>.</p>
   <div class="cookie-actions">
@@ -527,10 +517,6 @@
   })();
 
   // ---------- CONSENT-GATED THIRD-PARTY SERVICES ----------
-  // Google Fonts, the Maps embed and the Places rating fetch all talk to Google's
-  // servers (Fonts and Places also send/store data via requests or local storage),
-  // so all three are gated behind the same cookie choice rather than treating some
-  // as needing consent and others not.
   (function(){
     var banner = document.getElementById('cookieBanner');
     var frame = document.getElementById('mapFrame');
@@ -598,9 +584,6 @@
       updateSchemaRating(rating, count);
     }
 
-    // Keeps the JSON-LD aggregateRating in step with whatever figure is shown
-    // on the page, so search engines never see a rating/count that's stale
-    // relative to the visible content.
     function updateSchemaRating(rating, count){
       try {
         var el = document.getElementById('nb-schema');
