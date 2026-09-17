@@ -26,7 +26,7 @@
   the cookie notice (see the consent script near the end of <body>). Until then the site
   renders on its serif/sans-serif fallbacks below.
 -->
-<script type="application/ld+json">
+<script type="application/ld+json" id="nb-schema">
 {
   "@context": "https://schema.org",
   "@type": "HairSalon",
@@ -442,6 +442,7 @@
       <h3>Contact</h3>
       <ul>
         <li>Mobile: <a href="tel:+447452739705">+44 7452 739705</a></li>
+        <li>Email: <a href="mailto:danielhamzepour@gmail.com">danielhamzepour@gmail.com</a></li>
       </ul>
     </div>
   </div>
@@ -590,6 +591,23 @@
       document.querySelectorAll('.js-stars').forEach(function(el){
         el.textContent = starString(rating);
       });
+      updateSchemaRating(rating, count);
+    }
+
+    // Keeps the JSON-LD aggregateRating in step with whatever figure is shown
+    // on the page, so search engines never see a rating/count that's stale
+    // relative to the visible content.
+    function updateSchemaRating(rating, count){
+      try {
+        var el = document.getElementById('nb-schema');
+        if (!el) return;
+        var data = JSON.parse(el.textContent);
+        if (data.aggregateRating){
+          data.aggregateRating.ratingValue = String(rating.toFixed(1));
+          data.aggregateRating.reviewCount = String(count);
+          el.textContent = JSON.stringify(data);
+        }
+      } catch(e){}
     }
 
     function fetchRating(){
